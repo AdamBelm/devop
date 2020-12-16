@@ -16,6 +16,9 @@ spec:
       containers:
       - name: front-container
         image: adambel/githubex
+        env:
+          - name: API_URL
+            value: back-service
 ---
 apiVersion: v1
 kind: Service

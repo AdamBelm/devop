@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: back-deploy
+  labels:
+    app: back-db
+spec:
+  selector:
+    matchLabels:
+      app: back-pod
+  template:
+    metadata:
+      labels:
+        app: back-pod
+    spec:
+      containers:
+      - name: back-container
+        image: adambel/githubex11
+        env:
+        # il va reconaitre avec le dns? pour le redi
+        - name: REDIS
+          value: redi-service
+        - name: DB_USERNAME
+          value: postgres
+        - name: POSTGRES_PASSWORD
+          value: example
+        - name: DB_NAME
+          value: postgres
+        - name: DB_HOST
+          value: db
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: back-service
+spec:
+  type: NodePort
+  selector:
+    app: back-pod
+  ports:
+  - port: 8000
+    targetPort: 8000
+    nodePort: 30000

@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: front-deploy
+  labels:
+    app: front-db
+spec:
+  selector:
+    matchLabels:
+      app: front-pod
+  template:
+    metadata:
+      labels:
+        app: front-pod
+    spec:
+      containers:
+      - name: front-container
+        image: adambel/githubex
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: front-service
+spec:
+  type: NodePort
+  selector:
+    app: front-pod
+  ports:
+  - port: 5000
+    targetPort: 5000
+    nodePort: 30300
